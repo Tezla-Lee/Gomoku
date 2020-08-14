@@ -21,16 +21,21 @@ public class Player implements Inputtable {
 
     @Override
     public void getKeyboardInput() {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("좌표 입력하세요 : ");
-        String cor = sc.nextLine();
-        String [] corNum = cor.split(",");
-        int [] corInt = new int [2];
-        for (int i = 0; i < corInt.length; i++) {
-            corInt[i] = Integer.parseInt(corNum[i]);
-        }
-         pos.setX(corInt[0]);
-         pos.setY(corInt[1]);
+            Scanner sc = new Scanner(System.in);
+            System.out.print("좌표 입력하세요 : ");
+            try {
+                String cor = sc.nextLine();
+                String[] corNum = cor.split(",");
+                int[] corInt = new int[2];
+                for (int i = 0; i < corInt.length; i++) {
+                    corInt[i] = Integer.parseInt(corNum[i]);
+                    pos.setX(corInt[0]);
+                    pos.setY(corInt[1]);
+                }
+            } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
+                System.out.println("Error, 다시 입력하세요.");
+                this.getKeyboardInput();
+            }
 
         // 돌을 놓을 수 없는 경우
         if (pos.getX() < 0 || pos.getY() < 0 || pos.getX() > 15 || pos.getY() > 15 || Gomoku.board[pos.getX()][pos.getY()] == 1 || Gomoku.board[pos.getX()][pos.getY()] == 2) {
@@ -39,9 +44,11 @@ public class Player implements Inputtable {
         } else {
             if (count %2 == 0) {
                 g.play(Gomoku.p1, pos);
+                System.out.println(Gomoku.p1.getName() + " 착수");
                 count++;
             } else if (count %2 == 1) {
                 g.play(Gomoku.p2, pos);
+                System.out.println(Gomoku.p2.getName() + " 착수");
                 count++;
             }
             g.checkTPT();

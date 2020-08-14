@@ -258,6 +258,7 @@ public class Gomoku implements Simulatable, Winnable, Playable, Printable {
             }
         }
     }
+
     @Override
     public void reset() {
         p1.lineNum = 1;
