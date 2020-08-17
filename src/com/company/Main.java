@@ -33,6 +33,11 @@ public class Main {
         Player.g = go;
         Position position = new Position();
         Player.pos = position;
+        Scanner sc = new Scanner(System. in);
+        System.out.print("Player1 ID입력: ");
+        Gomoku.p1.setName(sc.nextLine());
+        System.out.print("Player2 ID입력: ");
+        Gomoku.p2.setName(sc.nextLine());
         go.initialize();
     }
 }

@@ -21,11 +21,16 @@ public class Gomoku implements Simulatable, Winnable, Playable, Printable {
 
     @Override
     public void printStatus() {
-        for (int[] col : board) {
-            for (int row : col) {
-                if (row == 0) {
+        for (int i = 0; i < board.length; i++) {
+            if (i == 0) {
+                System.out.println();
+                System.out.println("    1  2  3  4  5  6  7  8  9 10 11 12 13 14 15");
+            }
+            System.out.printf("%2d  ", i + 1);
+            for (int j = 0; j < board[i].length; j++) {
+                if (board[i][j] == 0) {
                     System.out.printf("%c  ", '+');
-                } else if (row == 1) {
+                } else if (board[i][j] == 1) {
                     System.out.printf("%c  ", 'X');
                 } else {
                     System.out.printf("%c  ", 'O');
@@ -44,9 +49,8 @@ public class Gomoku implements Simulatable, Winnable, Playable, Printable {
 
     @Override
     public void initialize() {
+        Scanner sc = new Scanner(System.in);
         board = new int[15][15];
-        p1.setName("이재복");
-        p2.setName("양동경");
         if (count % 2 == 0) {
             p1.getKeyboardInput();
             count++;
@@ -54,6 +58,7 @@ public class Gomoku implements Simulatable, Winnable, Playable, Printable {
             p2.getKeyboardInput();
             count++;
         }
+        sc.close();
     }
 
     @Override
@@ -86,20 +91,22 @@ public class Gomoku implements Simulatable, Winnable, Playable, Printable {
         }
         if (board[Player.pos.getX()][Player.pos.getY()] == 2) {
             for (int i = 1; i < 5; i++) {
-                if (Player.pos.getX() + i > 15)
+                if (Player.pos.getX() + i >= 15) {
                     break;
-                if (board[Player.pos.getX() + i][Player.pos.getY()] == 2) {
+                } else if (board[Player.pos.getX() + i][Player.pos.getY()] == 2) {
                     p2.lineNum++;
-                } else
+                } else {
                     break;
+                }
             }
             for (int i = 1; i < 5; i++) {
-                if (Player.pos.getX() - i < 0)
+                if (Player.pos.getX() - i < 0) {
                     break;
-                if (board[Player.pos.getX() - i][Player.pos.getY()] == 2) {
+                } else if (board[Player.pos.getX() - i][Player.pos.getY()] == 2) {
                     p2.lineNum++;
-                } else
+                } else {
                     break;
+                }
             }
             if (p2.lineNum == 5) {
                 p2.numWin += 1;
@@ -133,128 +140,128 @@ public class Gomoku implements Simulatable, Winnable, Playable, Printable {
                 System.out.println(p1.getName() + " : " + p1.numWin + " 번 이겼습니다.");
                 this.end();
             }
-            if (board[Player.pos.getX()][Player.pos.getY()] == 2) {
-                for (int i = 1; i < 5; i++) {
-                    if (Player.pos.getY() + i > 15)
-                        break;
-                    if (board[Player.pos.getX()][Player.pos.getY() + i] == 2) {
-                        p2.lineNum++;
-                    } else
-                        break;
-                }
-                for (int i = 1; i < 5; i++) {
-                    if (Player.pos.getY() - i < 0)
-                        break;
-                    if (board[Player.pos.getX()][Player.pos.getY() - i] == 2) {
-                        p2.lineNum++;
-                    } else
-                        break;
-                }
-                if (p2.lineNum == 5) {
-                    p2.numWin += 1;
-                    System.out.println(p2.getName() + " : " + p2.numWin + " 번 이겼습니다.");
-                    this.end();
-                }
+        }
+        if (board[Player.pos.getX()][Player.pos.getY()] == 2) {
+            for (int i = 1; i < 5; i++) {
+                if (Player.pos.getY() + i >= 15)
+                    break;
+                if (board[Player.pos.getX()][Player.pos.getY() + i] == 2) {
+                    p2.lineNum++;
+                } else
+                    break;
             }
+            for (int i = 1; i < 5; i++) {
+                if (Player.pos.getY() - i < 0)
+                    break;
+                if (board[Player.pos.getX()][Player.pos.getY() - i] == 2) {
+                    p2.lineNum++;
+                } else
+                    break;
+            }
+            if (p2.lineNum == 5) {
+                p2.numWin += 1;
+                System.out.println(p2.getName() + " : " + p2.numWin + " 번 이겼습니다.");
+                this.end();
+            }
+        }
 
-            // 대각선1
-            p1.lineNum = 1;
-            p2.lineNum = 1;
-            if (board[Player.pos.getX()][Player.pos.getY()] == 1) {
-                for (int i = 1; i < 5; i++) {
-                    if (Player.pos.getX() + i >= 15 || Player.pos.getY() + i >= 15)
-                        break;
-                    if (board[Player.pos.getX() + i][Player.pos.getY() + i] == 1) {
-                        p1.lineNum++;
-                    } else
-                        break;
-                }
-                for (int i = 1; i < 5; i++) {
-                    if (Player.pos.getX() - i < 0 || Player.pos.getY() - i < 0)
-                        break;
-                    if (board[Player.pos.getX() - i][Player.pos.getY() - i] == 1) {
-                        p1.lineNum++;
-                    } else
-                        break;
-                }
-                if (p1.lineNum == 5) {
-                    p1.numWin += 1;
-                    System.out.println(p1.getName() + " : " + p1.numWin + " 번 이겼습니다.");
-                    this.end();
-                }
+        // 대각선1
+        p1.lineNum = 1;
+        p2.lineNum = 1;
+        if (board[Player.pos.getX()][Player.pos.getY()] == 1) {
+            for (int i = 1; i < 5; i++) {
+                if (Player.pos.getX() + i >= 15 || Player.pos.getY() + i >= 15)
+                    break;
+                if (board[Player.pos.getX() + i][Player.pos.getY() + i] == 1) {
+                    p1.lineNum++;
+                } else
+                    break;
             }
-            if (board[Player.pos.getX()][Player.pos.getY()] == 2) {
-                for (int i = 1; i < 5; i++) {
-                    if (Player.pos.getX() + i > 15 || Player.pos.getY() + i > 15)
-                        break;
-                    if (board[Player.pos.getX() + i][Player.pos.getY() + i] == 2) {
-                        p2.lineNum++;
-                    } else
-                        break;
-                }
-                for (int i = 1; i < 5; i++) {
-                    if (Player.pos.getY() - i < 0)
-                        break;
-                    if (board[Player.pos.getX() - i][Player.pos.getY() - i] == 2) {
-                        p2.lineNum++;
-                    } else
-                        break;
-                }
-                if (p2.lineNum == 5) {
-                    p2.numWin += 1;
-                    System.out.println(p2.getName() + " : " + p2.numWin + " 번 이겼습니다.");
-                    this.end();
-                }
+            for (int i = 1; i < 5; i++) {
+                if (Player.pos.getX() - i < 0 || Player.pos.getY() - i < 0)
+                    break;
+                if (board[Player.pos.getX() - i][Player.pos.getY() - i] == 1) {
+                    p1.lineNum++;
+                } else
+                    break;
             }
+            if (p1.lineNum == 5) {
+                p1.numWin += 1;
+                System.out.println(p1.getName() + " : " + p1.numWin + " 번 이겼습니다.");
+                this.end();
+            }
+        }
+        if (board[Player.pos.getX()][Player.pos.getY()] == 2) {
+            for (int i = 1; i < 5; i++) {
+                if (Player.pos.getX() + i >= 15 || Player.pos.getY() + i >= 15)
+                    break;
+                if (board[Player.pos.getX() + i][Player.pos.getY() + i] == 2) {
+                    p2.lineNum++;
+                } else
+                    break;
+            }
+            for (int i = 1; i < 5; i++) {
+                if (Player.pos.getY() - i < 0)
+                    break;
+                if (board[Player.pos.getX() - i][Player.pos.getY() - i] == 2) {
+                    p2.lineNum++;
+                } else
+                    break;
+            }
+            if (p2.lineNum == 5) {
+                p2.numWin += 1;
+                System.out.println(p2.getName() + " : " + p2.numWin + " 번 이겼습니다.");
+                this.end();
+            }
+        }
 
-            // 대각선2
-            p1.lineNum = 1;
-            p2.lineNum = 1;
-            if (board[Player.pos.getX()][Player.pos.getY()] == 1) {
-                for (int i = 1; i < 5; i++) {
-                    if (Player.pos.getX() - i < 0 || Player.pos.getY() + i >= 15)
-                        break;
-                    if (board[Player.pos.getX() - i][Player.pos.getY() + i] == 1) {
-                        p1.lineNum++;
-                    } else
-                        break;
-                }
-                for (int i = 1; i < 5; i++) {
-                    if (Player.pos.getY() + i >= 15 || Player.pos.getY() - i < 0)
-                        break;
-                    if (board[Player.pos.getX() + i][Player.pos.getY() - i] == 1) {
-                        p1.lineNum++;
-                    } else
-                        break;
-                }
-                if (p1.lineNum == 5) {
-                    p1.numWin += 1;
-                    System.out.println(p1.getName() + " : " + p1.numWin + " 번 이겼습니다.");
-                    this.end();
-                }
+        // 대각선2
+        p1.lineNum = 1;
+        p2.lineNum = 1;
+        if (board[Player.pos.getX()][Player.pos.getY()] == 1) {
+            for (int i = 1; i < 5; i++) {
+                if (Player.pos.getX() - i < 0 || Player.pos.getY() + i > 14)
+                    break;
+                if (board[Player.pos.getX() - i][Player.pos.getY() + i] == 1) {
+                    p1.lineNum++;
+                } else
+                    break;
             }
-            if (board[Player.pos.getX()][Player.pos.getY()] == 2) {
-                for (int i = 1; i < 5; i++) {
-                    if (Player.pos.getX() - i < 0 || Player.pos.getY() + i > 15)
-                        break;
-                    if (board[Player.pos.getX() - i][Player.pos.getY() + i] == 2) {
-                        p2.lineNum++;
-                    } else
-                        break;
-                }
-                for (int i = 1; i < 5; i++) {
-                    if (Player.pos.getX() + i >= 15 || Player.pos.getY() - i < 0)
-                        break;
-                    if (board[Player.pos.getX() + i][Player.pos.getY() - i] == 2) {
-                        p2.lineNum++;
-                    } else
-                        break;
-                }
-                if (p2.lineNum == 5) {
-                    p2.numWin += 1;
-                    System.out.println(p2.getName() + " : " + p2.numWin + " 번 이겼습니다.");
-                    this.end();
-                }
+            for (int i = 1; i < 5; i++) {
+                if (Player.pos.getX() + i > 14 || Player.pos.getY() - i < 0) {
+                    break;
+                } else if (board[Player.pos.getX() + i][Player.pos.getY() - i] == 1) {
+                    p1.lineNum++;
+                } else
+                    break;
+            }
+            if (p1.lineNum == 5) {
+                p1.numWin += 1;
+                System.out.println(p1.getName() + " : " + p1.numWin + " 번 이겼습니다.");
+                this.end();
+            }
+        }
+        if (board[Player.pos.getX()][Player.pos.getY()] == 2) {
+            for (int i = 1; i < 5; i++) {
+                if (Player.pos.getX() - i < 0 || Player.pos.getY() + i >= 15)
+                    break;
+                if (board[Player.pos.getX() - i][Player.pos.getY() + i] == 2) {
+                    p2.lineNum++;
+                } else
+                    break;
+            }
+            for (int i = 1; i < 5; i++) {
+                if (Player.pos.getX() + i >= 15 || Player.pos.getY() - i < 0)
+                    break;
+                if (board[Player.pos.getX() + i][Player.pos.getY() - i] == 2) {
+                    p2.lineNum++;
+                } else
+                    break;
+            }
+            if (p2.lineNum == 5) {
+                p2.numWin += 1;
+                System.out.println(p2.getName() + " : " + p2.numWin + " 번 이겼습니다.");
+                this.end();
             }
         }
     }
@@ -270,7 +277,7 @@ public class Gomoku implements Simulatable, Winnable, Playable, Printable {
 
     @Override
     public void end() {
-        System.out.println("종료하시려면 q를 입력하세요. 계속 하시리면 아무 키나 입력하세요.");
+        System.out.println("종료하시려면 q를 입력하세요. 계속 하시려면 아무 키나 입력하세요.");
         Scanner sc = new Scanner(System.in);
         String q = sc.nextLine();
         if (q.equals("q")) {
@@ -290,7 +297,7 @@ public class Gomoku implements Simulatable, Winnable, Playable, Printable {
         p2.lineNum = 1;
         if (board[Player.pos.getX()][Player.pos.getY()] == 1) {
             for (int i = 1; i < 3; i++) {
-                if (Player.pos.getX() + i >= 15)
+                if (Player.pos.getX() + i > 14)
                     break;
                 if (board[Player.pos.getX() + i][Player.pos.getY()] == 1) {
                     p1.lineNum++;
@@ -312,7 +319,7 @@ public class Gomoku implements Simulatable, Winnable, Playable, Printable {
         }
         if (board[Player.pos.getX()][Player.pos.getY()] == 2) {
             for (int i = 1; i < 3; i++) {
-                if (Player.pos.getX() + i > 15)
+                if (Player.pos.getX() + i > 14)
                     break;
                 if (board[Player.pos.getX() + i][Player.pos.getY()] == 2) {
                     p2.lineNum++;
@@ -337,7 +344,7 @@ public class Gomoku implements Simulatable, Winnable, Playable, Printable {
         p2.lineNum = 1;
         if (board[Player.pos.getX()][Player.pos.getY()] == 1) {
             for (int i = 1; i < 3; i++) {
-                if (Player.pos.getY() + i >= 15)
+                if (Player.pos.getY() + i > 14)
                     break;
                 if (board[Player.pos.getX()][Player.pos.getY() + i] == 1) {
                     p1.lineNum++;
@@ -359,9 +366,9 @@ public class Gomoku implements Simulatable, Winnable, Playable, Printable {
 
         if (board[Player.pos.getX()][Player.pos.getY()] == 2) {
             for (int i = 1; i < 3; i++) {
-                if (Player.pos.getY() + i > 15)
+                if (Player.pos.getY() + i > 14) {
                     break;
-                if (board[Player.pos.getX()][Player.pos.getY() + i] == 2) {
+                } else if (board[Player.pos.getX()][Player.pos.getY() + i] == 2) {
                     p2.lineNum++;
                 } else
                     break;
@@ -384,7 +391,7 @@ public class Gomoku implements Simulatable, Winnable, Playable, Printable {
         p2.lineNum = 1;
         if (board[Player.pos.getX()][Player.pos.getY()] == 1) {
             for (int i = 1; i < 3; i++) {
-                if (Player.pos.getX() + i >= 15 || Player.pos.getY() + i >= 15)
+                if (Player.pos.getX() + i > 14 || Player.pos.getY() + i > 14)
                     break;
                 if (board[Player.pos.getX() + i][Player.pos.getY() + i] == 1) {
                     p1.lineNum++;
@@ -405,7 +412,7 @@ public class Gomoku implements Simulatable, Winnable, Playable, Printable {
         }
         if (board[Player.pos.getX()][Player.pos.getY()] == 2) {
             for (int i = 1; i < 3; i++) {
-                if (Player.pos.getX() + i > 15 || Player.pos.getY() + i > 15)
+                if (Player.pos.getX() + i > 14 || Player.pos.getY() + i > 14)
                     break;
                 if (board[Player.pos.getX() + i][Player.pos.getY() + i] == 2) {
                     p2.lineNum++;
@@ -430,7 +437,7 @@ public class Gomoku implements Simulatable, Winnable, Playable, Printable {
         p2.lineNum = 1;
         if (board[Player.pos.getX()][Player.pos.getY()] == 1) {
             for (int i = 1; i < 3; i++) {
-                if (Player.pos.getX() - i < 0 || Player.pos.getY() + i >= 15)
+                if (Player.pos.getX() - i < 0 || Player.pos.getY() + i > 14)
                     break;
                 if (board[Player.pos.getX() - i][Player.pos.getY() + i] == 1) {
                     p1.lineNum++;
@@ -438,9 +445,9 @@ public class Gomoku implements Simulatable, Winnable, Playable, Printable {
                     break;
             }
             for (int i = 1; i < 3; i++) {
-                if (Player.pos.getY() + i >= 15 || Player.pos.getY() - i < 0)
+                if (Player.pos.getX() + i > 14 || Player.pos.getY() - i < 0) {
                     break;
-                if (board[Player.pos.getX() + i][Player.pos.getY() - i] == 1) {
+                } else if (board[Player.pos.getX() + i][Player.pos.getY() - i] == 1) {
                     p1.lineNum++;
                 } else
                     break;
@@ -451,7 +458,7 @@ public class Gomoku implements Simulatable, Winnable, Playable, Printable {
         }
         if (board[Player.pos.getX()][Player.pos.getY()] == 2) {
             for (int i = 1; i < 3; i++) {
-                if (Player.pos.getX() - i < 0 || Player.pos.getY() + i > 15)
+                if (Player.pos.getX() - i < 0 || Player.pos.getY() + i > 14)
                     break;
                 if (board[Player.pos.getX() - i][Player.pos.getY() + i] == 2) {
                     p2.lineNum++;
@@ -459,7 +466,7 @@ public class Gomoku implements Simulatable, Winnable, Playable, Printable {
                     break;
             }
             for (int i = 1; i < 3; i++) {
-                if (Player.pos.getX() + i >= 15 || Player.pos.getY() - i < 0)
+                if (Player.pos.getX() + i >= 14 || Player.pos.getY() - i < 0)
                     break;
                 if (board[Player.pos.getX() + i][Player.pos.getY() - i] == 2) {
                     p2.lineNum++;
